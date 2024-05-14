@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>WebSocket Тест</title>
+</head>
+<body>
+<script>  
+document.addEventListener('DOMContentLoaded', function() {
+    var ws;
+
+    function connect() {
+        ws = new WebSocket('{{.}}');
+
+        ws.onopen = function() {
+            alert('Соединение установлено');
+        };
+
+        ws.onmessage = function(event) {
+            alert('Получено сообщение: ' + event.data);
+        };
+
+        ws.onclose = function() {
+            alert('Соединение закрыто');
+        };
+
+        ws.onerror = function(error) {
+            alert('Ошибка: ' + error);
+        };
+    }
+
+    document.getElementById('sendButton').addEventListener('click', function() {
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            alert('WebSocket не подключен. Подключаюсь...');
+            connect();
+        }
+        ws.send('Привет, сервер!');
+        alert('Сообщение отправлено: Привет, сервер!');
+    });
+});
+</script>
+<button id="sendButton">Отправить сообщение</button>
+</body>
+</html>
